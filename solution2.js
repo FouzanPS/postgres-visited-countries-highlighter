@@ -44,12 +44,22 @@ app.post("/add", async (req, res) => {
   if (result.rows.length > 0) {
     const data = result.rows[0];
     console.log(data);
+    const countryCode = data.country_code;
+
+    await db.query("INSERT INTO visited_countries (country_code) VALUES ($1)", [
+      countryCode,
+    ]);
 
     res.redirect("/");
   } else {
     console.log("No rows found in the result.");
     res.render("/");
   }
+
+  // if (result.rows.length !== 0) {
+  //   const data = result.rows[0];
+  //   res.redirect("/");
+  // }
 });
 
 app.listen(port, () => {
